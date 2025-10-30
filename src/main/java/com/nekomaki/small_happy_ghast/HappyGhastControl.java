@@ -51,10 +51,12 @@ public final class HappyGhastControl {
             Hand hand) {
 
         // If not already growing, start the growth process
-        if (hg instanceof GrowingGhast gg) {
-            if (!gg.isGrowing()) {
-                hg.setBreedingAge(-24000);
-                gg.setGrowing(true);
+        if (hg.isBaby()) {
+            if (hg instanceof GrowingGhast gg) {
+                if (!gg.isGrowing()) {
+                    hg.setBreedingAge(-24000);
+                    gg.setGrowing(true);
+                }
             }
         }
 
