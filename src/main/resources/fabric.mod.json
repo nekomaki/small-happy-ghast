@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "small_happy_ghast",
+  "version": "${version}",
+  "name": "Small Happy Ghast",
+  "description": "",
+  "authors": [
+    "nekomaki"
+  ],
+  "contact": {
+    "sources": "https://github.com/nekomaki/Small-Happy-Ghast",
+    "issues": "https://github.com/nekomaki/Small-Happy-Ghast/issues",
+    "homepage": "https://modrinth.com/mod/small_happy_ghast"
+  },
+  "license": "GPL-3.0",
+  "icon": "assets/small_happy_ghast/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.nekomaki.small_happy_ghast.SmallHappyGhast"
+    ]
+  },
+  "mixins": [
+    "small_happy_ghast.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": ">=${fabric_version}",
+    "minecraft": ">=${minecraft_version}"
+  }
+}

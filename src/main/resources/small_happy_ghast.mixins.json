@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.nekomaki.small_happy_ghast.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "MixinHappyGhastEntity"
+  ],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}
