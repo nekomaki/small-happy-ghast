@@ -14,37 +14,37 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.nekomaki.small_happy_ghast.GrowingGhast;
 
 @Mixin(HappyGhastEntity.class)
-public abstract class MixinHappyGhastEntity extends PassiveEntity implements GrowingGhast {
+public abstract class HappyGhastEntityMixin extends PassiveEntity implements GrowingGhast {
 
     @Unique
-    private boolean ghGrowing = false;
+    private boolean growing = false;
 
-    protected MixinHappyGhastEntity(EntityType<? extends PassiveEntity> entityType, World world) {
+    protected HappyGhastEntityMixin(EntityType<? extends PassiveEntity> entityType, World world) {
         super(entityType, world);
     }
 
     @Inject(method = "writeCustomData", at = @At("TAIL"))
-    private void hg$writeCustomData(WriteView nbt, CallbackInfo ci) {
-        nbt.putBoolean("Growing", this.ghGrowing);
+    private void smallHappyGhast$writeCustomData(WriteView nbt, CallbackInfo ci) {
+        nbt.putBoolean("Growing", this.growing);
     }
 
     @Inject(method = "readCustomData", at = @At("TAIL"))
-    private void hg$readCustomData(ReadView nbt, CallbackInfo ci) {
-        this.ghGrowing = nbt.getBoolean("Growing", false);
+    private void smallHappyGhast$readCustomData(ReadView nbt, CallbackInfo ci) {
+        this.growing = nbt.getBoolean("Growing", false);
     }
 
     @Unique
     public boolean isGrowing() {
-        return this.ghGrowing;
+        return this.growing;
     }
 
     @Unique
     public void setGrowing(boolean value) {
-        this.ghGrowing = value;
+        this.growing = value;
     }
 
     @Inject(method = "onGrowUp", at = @At("HEAD"), cancellable = true)
-    private void hg$onGrowUp(CallbackInfo ci) {
+    private void smallHappyGhast$onGrowUp(CallbackInfo ci) {
         HappyGhastEntity hg = (HappyGhastEntity) (Object) this;
 
         if (hg instanceof GrowingGhast gg && !gg.isGrowing()) {

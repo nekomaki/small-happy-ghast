@@ -1,6 +1,6 @@
 # Small Happy Ghast
 
-A lightweight, server-side Fabric mod that makes the Ghastlings grow only when fed a snowball. Designed for minimal impact.
+A lightweight, server-side-only Fabric mod that makes the Ghastlings grow only when fed a snowball. Designed for minimal impact.
 
 ---
 

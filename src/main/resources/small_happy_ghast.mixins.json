@@ -4,7 +4,7 @@
   "package": "com.nekomaki.small_happy_ghast.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "MixinHappyGhastEntity"
+    "HappyGhastEntityMixin"
   ],
   "client": [],
   "injectors": {
