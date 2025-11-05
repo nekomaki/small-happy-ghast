@@ -6,6 +6,7 @@ A lightweight, server-side-only Fabric mod that makes the Ghastlings grow only w
 
 - The Ghastlings will **not** grow automatically, but only grows after being fed a snowball.
 - Fully server-side only.
+- Compatible with vanilla clients.
 
 ## Installation
 
