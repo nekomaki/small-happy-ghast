@@ -1,14 +1,12 @@
 package com.nekomaki.small_happy_ghast;
 
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.passive.HappyGhastEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.animal.HappyGhast;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,39 +19,39 @@ public final class HappyGhastControl {
         UseEntityCallback.EVENT.register((player, world, hand, entity, hit) -> {
 
             if (!canProcess(player, world, hand, entity)) {
-                return ActionResult.PASS;
+                return InteractionResult.PASS;
             }
 
-            ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
-            HappyGhastEntity hg = (HappyGhastEntity) entity;
-            ItemStack stack = player.getStackInHand(hand);
+            ServerPlayer serverPlayer = (ServerPlayer) player;
+            HappyGhast hg = (HappyGhast) entity;
+            ItemStack stack = player.getItemInHand(hand);
 
             // Handle snowball feeding
-            if (stack.isOf(Items.SNOWBALL)) {
+            if (stack.is(Items.SNOWBALL)) {
                 return handleSnowball(hg, stack, serverPlayer, player, hand);
             }
 
-            return ActionResult.PASS;
+            return InteractionResult.PASS;
         });
     }
 
     // Basic validation before processing
-    private static boolean canProcess(net.minecraft.entity.player.PlayerEntity p, net.minecraft.world.World w, Hand h, net.minecraft.entity.Entity e) {
-        return !w.isClient() && h == Hand.MAIN_HAND && p instanceof ServerPlayerEntity && e instanceof HappyGhastEntity;
+    private static boolean canProcess(net.minecraft.world.entity.player.Player p, net.minecraft.world.level.Level w, InteractionHand h, net.minecraft.world.entity.Entity e) {
+        return !w.isClientSide() && h == InteractionHand.MAIN_HAND && p instanceof ServerPlayer && e instanceof HappyGhast;
     }
 
     // Handles feeding a snowball to the Happy Ghast
-    private static ActionResult handleSnowball(
-            HappyGhastEntity hg,
+    private static InteractionResult handleSnowball(
+            HappyGhast hg,
             ItemStack stack,
-            ServerPlayerEntity player,
-            net.minecraft.entity.player.PlayerEntity p,
-            Hand hand) {
+            ServerPlayer player,
+            net.minecraft.world.entity.player.Player p,
+            InteractionHand hand) {
 
         // If not already growing, start the growth process
         if (hg.isBaby()) {
             if (hg instanceof GrowingGhast gg && !gg.isGrowing()) {
-                hg.setBreedingAge(-24000);
+                hg.setAge(-24000);
                 gg.setGrowing(true);
             }
         }
