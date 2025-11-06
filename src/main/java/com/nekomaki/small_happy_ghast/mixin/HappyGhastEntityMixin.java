@@ -5,16 +5,23 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import com.nekomaki.small_happy_ghast.GrowingGhast;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.HappyGhast;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 @Mixin(HappyGhast.class)
-public abstract class HappyGhastEntityMixin extends AgeableMob implements GrowingGhast {
+public abstract class HappyGhastEntityMixin extends AgeableMob {
 
     @Unique
     private boolean growing = false;
@@ -24,12 +31,12 @@ public abstract class HappyGhastEntityMixin extends AgeableMob implements Growin
     }
 
     @Unique
-    public boolean isGrowing() {
+    private boolean isGrowing() {
         return this.growing;
     }
 
     @Unique
-    public void setGrowing(boolean value) {
+    private void setGrowing(boolean value) {
         this.growing = value;
     }
 
@@ -45,11 +52,24 @@ public abstract class HappyGhastEntityMixin extends AgeableMob implements Growin
 
     @Inject(method = "ageBoundaryReached", at = @At("HEAD"), cancellable = true)
     private void smallHappyGhast$ageBoundaryReached(CallbackInfo ci) {
-        HappyGhast hg = (HappyGhast) (Object) this;
-
-        if (hg instanceof GrowingGhast gg && !gg.isGrowing()) {
-            hg.setAge(-24000);
+        if (!this.isGrowing()) {
+            this.setAge(-24000);
             ci.cancel();
+        }
+    }
+
+    @Inject(method = "mobInteract", at = @At("HEAD"), cancellable = true)
+    private void smallHappyGhast$mobInteract(Player player, InteractionHand hand,
+            CallbackInfoReturnable<InteractionResult> cir) {
+        if (!(player instanceof ServerPlayer)) return;
+
+        ItemStack stack = player.getItemInHand(hand);
+
+        if (stack.is(Items.SNOWBALL)) {
+            if (this.isBaby() && !this.isGrowing()) {
+                this.setGrowing(true);
+                this.setAge(-24000);
+            }
         }
     }
 }

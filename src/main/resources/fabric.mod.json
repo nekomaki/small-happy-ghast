@@ -16,9 +16,7 @@
   "icon": "assets/small_happy_ghast/icon.png",
   "environment": "*",
   "entrypoints": {
-    "main": [
-      "com.nekomaki.small_happy_ghast.SmallHappyGhast"
-    ]
+    "main": []
   },
   "mixins": [
     "small_happy_ghast.mixins.json"
